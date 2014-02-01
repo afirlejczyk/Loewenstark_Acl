@@ -3,13 +3,13 @@
 class Loewenstark_Acl_Helper_Data
 extends Mage_Core_Helper_Abstract
 {
-    
-    protected $_websites_not_int_list = null;    
+
+    protected $_websites_not_int_list = null;
     protected $_websites = null;
     protected $_role = null;
 
     /**
-     * 
+     *
      * @todo add DispatchEvent in this method
      * @return array
      */
@@ -22,7 +22,7 @@ extends Mage_Core_Helper_Abstract
 
     /**
      * @deprecated since version 1.0.0.1
-     * 
+     *
      * @return array
      */
     public function getFieldsInJson()
@@ -31,7 +31,7 @@ extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function getWebsites()
@@ -53,7 +53,7 @@ extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * 
+     *
      * @return mixed
      */
     public function getWebsiteAsOption()
@@ -69,9 +69,20 @@ extends Mage_Core_Helper_Abstract
         return $data;
     }
 
+
     /**
-     * 
-     * 
+     * Forms string out of getWebsitesIds()
+     *
+     * @return string
+     */
+    public function getIdsString()
+    {
+        return implode(',', $this->getWebsitesIds());
+    }
+
+    /**
+     *
+     *
      * @param int $roleid role_id from admin/role
      * @return boolean
      */
@@ -90,7 +101,7 @@ extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * 
+     *
      * @return Mage_Admin_Model_Roles
      */
     protected function _getRole()
@@ -103,7 +114,7 @@ extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * 
+     *
      * @param Mage_Admin_Model_Role $role
      * @return Loewenstark_Acl_Helper_Data
      */
@@ -115,7 +126,7 @@ extends Mage_Core_Helper_Abstract
 
     /**
      * check if the admin area is active
-     * 
+     *
      * @return boolean
      */
     public function isAdminArea()
@@ -123,21 +134,21 @@ extends Mage_Core_Helper_Abstract
         if(Mage::getDesign()->getArea() == 'adminhtml')
         {
             return true;
-        }   
+        }
         return false;
     }
 
     /**
-     * 
+     *
      * @return Mage_Admin_Model_Role
      */
     public function getActiveRole()
     {
         return Mage::getSingleton('admin/session')->getUser()->getRole();
     }
-    
+
     /**
-     * 
+     *
      * @return array
      */
     public function getWebsitesIds()
@@ -148,5 +159,16 @@ extends Mage_Core_Helper_Abstract
             $this->_websites_not_int_list = array_keys($websites);
         }
         return $this->_websites_not_int_list;
+    }
+
+    public function getStoreViewsIds()
+    {
+        $collection = Mage::getModel('core/store')->getCollection()->getAllIds();
+        return $collection;
+    }
+
+    public function getStoreViewsAsString()
+    {
+        return implode(',', $this->getStoreViewsIds());
     }
 }

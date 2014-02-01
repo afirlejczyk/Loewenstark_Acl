@@ -3,7 +3,7 @@
 class Loewenstark_Acl_Model_Observer
 {
     /**
-     * 
+     *
      * @param Varien_Event $event
      */
     public function loadAfterAdminModelRole($event)
@@ -22,7 +22,7 @@ class Loewenstark_Acl_Model_Observer
     }
 
     /**
-     * 
+     *
      * @param Varien_Event $event
      */
     public function saveBeforeAdminModelRole($event)
@@ -31,7 +31,7 @@ class Loewenstark_Acl_Model_Observer
         /* @var Mage_Admin_Model_Role $rule */
         if($rule instanceof Mage_Admin_Model_Role)
         {
-            
+
             $websites = $rule->getData('websites');
             if(!is_array($websites))
             {
@@ -40,9 +40,9 @@ class Loewenstark_Acl_Model_Observer
             $rule->setData('websites', implode(',', array_filter($websites)));
         }
     }
-    
+
     /**
-     * 
+     *
      * @param Varien_Event $event
      */
     public function addTabToRoles($event)
@@ -58,9 +58,9 @@ class Loewenstark_Acl_Model_Observer
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * @param type $event
      */
     public function addAdminPermissionsRolePrepareSave($event)
@@ -84,9 +84,40 @@ class Loewenstark_Acl_Model_Observer
             $role->setData('websites', implode(',', array_filter($websites)));
         }
     }
-    
+
+
     /**
-     * 
+     *
+     * @param type $event
+     */
+    public function addAdminPermissionsUserPrepareSave($event)
+    {
+        $role = $event->getObject();
+        /* @var Mage_Admin_Model_Role $role */
+        $request = Mage::app()->getRequest();
+        /* @var Mage_Core_Controller_Request_Http $request */
+//        if($request->getParam('all', false))
+//        {
+//            foreach($this->_helper()->getFields() as $field)
+//            {
+//                $role->setData($field, null);
+//            }
+//        } else {
+            $websites = $request->getParam('website_limit', null);
+            if(count($websites) == 1 && $websites[0] == 0) {
+                $websites = Mage::helper('loewenstark_acl')->getStoreViewsAsString();
+            }
+            if(!is_array($websites))
+            {
+                $websites = (array)explode(',', $websites);
+            }
+            $role->setData('website_limit', implode(',', array_filter($websites)));
+//        }
+    }
+
+
+    /**
+     *
      * @param Varien_Event $event
      */
     public function addRoleFilterToProductCollection($event)
@@ -105,7 +136,7 @@ class Loewenstark_Acl_Model_Observer
     }
 
     /**
-     * 
+     *
      * @param Varien_Event $event
      */
     public function addRoleFilterToCustomerCollection($event)
@@ -125,16 +156,16 @@ class Loewenstark_Acl_Model_Observer
 
     /**
      * get role from registry, from eg. editRole Controller
-     * 
+     *
      * @return Mage_Admin_Model_Roles
      */
     protected function _getRole()
     {
         return Mage::registry('current_role');
     }
-    
+
     /**
-     * 
+     *
      * @return bool
      */
     protected function _isAdmin()
@@ -148,7 +179,7 @@ class Loewenstark_Acl_Model_Observer
     }
 
     /**
-     * 
+     *
      * @return Loewenstark_Acl_Helper_Data
      */
     protected function _helper()
