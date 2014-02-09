@@ -5,7 +5,7 @@
  * Date: 2/1/14
  * Time: 12:04 PM
  */
-class Loewenstark_Acl_Block_Permissions_User_Edit_Tab_Main
+class Loewenstark_Acl_Block_Adminhtml_Permissions_User_Edit_Tab_Main
     extends Mage_Adminhtml_Block_Permissions_User_Edit_Tab_Main
 {
 

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <Loewenstart_Acl translate="title">
+                        <title>Advanced Permissions Tab</title>
+                        <sort_order>10</sort_order>
+                    </Loewenstart_Acl>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

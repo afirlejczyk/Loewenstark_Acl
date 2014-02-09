@@ -13,6 +13,8 @@ $installer->getConnection()->addColumn($installer->getTable('admin/role'), 'webs
     'comment' => 'Loewenstark Websites field'
 ));
 
+$installer->run("ALTER TABLE {$this->getTable('admin_user')} ADD 'website_limit'  TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'website_limits'");
+
 $installer->getConnection()->dropColumn($installer->getTable('admin/role'), 'loewenstark_acl');
 
 $installer->endSetup();

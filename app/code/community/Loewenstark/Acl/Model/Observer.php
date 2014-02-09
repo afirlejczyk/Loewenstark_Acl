@@ -45,11 +45,11 @@ class Loewenstark_Acl_Model_Observer
      *
      * @param Varien_Event $event
      */
-    public function addTabToRoles($event)
+   /* public function addTabToRoles($event)
     {
         $block = $event->getBlock();
         /* @var Mage_Adminhtml_Block_Permissions_Editroles $block */
-        if($block instanceof Mage_Adminhtml_Block_Permissions_Editroles)
+       /* if($block instanceof Mage_Adminhtml_Block_Permissions_Editroles)
         {
             if(!$this->_isAdmin())
             {
@@ -57,7 +57,7 @@ class Loewenstark_Acl_Model_Observer
                 $block->addTab('loewenstark_acl', $tab);
             }
         }
-    }
+    }*/
 
     /**
      *
@@ -67,22 +67,17 @@ class Loewenstark_Acl_Model_Observer
     {
         $role = $event->getObject();
         /* @var Mage_Admin_Model_Role $role */
-        $request = $event->getRequest();
+        $request = Mage::app()->getRequest();
         /* @var Mage_Core_Controller_Request_Http $request */
-        if($request->getParam('all', false))
-        {
-            foreach($this->_helper()->getFields() as $field)
-            {
-                $role->setData($field, null);
-            }
-        } else {
-            $websites = $request->getParam('websites', null);
-            if(!is_array($websites))
-            {
-                $websites = (array)explode(',', $websites);
-            }
-            $role->setData('websites', implode(',', array_filter($websites)));
+        $websites = $request->getParam('websites', null);
+        if(count($websites) == 1 && $websites[0] == 0) {
+            $websites = Mage::helper('loewenstark_acl')->getStoreViewsAsString();
         }
+        if(!is_array($websites))
+        {
+            $websites = (array)explode(',', $websites);
+        }
+        $role->setData('websites', implode(',', array_filter($websites)));
     }
 
 
@@ -96,13 +91,7 @@ class Loewenstark_Acl_Model_Observer
         /* @var Mage_Admin_Model_Role $role */
         $request = Mage::app()->getRequest();
         /* @var Mage_Core_Controller_Request_Http $request */
-//        if($request->getParam('all', false))
-//        {
-//            foreach($this->_helper()->getFields() as $field)
-//            {
-//                $role->setData($field, null);
-//            }
-//        } else {
+
             $websites = $request->getParam('website_limit', null);
             if(count($websites) == 1 && $websites[0] == 0) {
                 $websites = Mage::helper('loewenstark_acl')->getStoreViewsAsString();
@@ -112,7 +101,7 @@ class Loewenstark_Acl_Model_Observer
                 $websites = (array)explode(',', $websites);
             }
             $role->setData('website_limit', implode(',', array_filter($websites)));
-//        }
+
     }
 
 
